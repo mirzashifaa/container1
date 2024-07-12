@@ -13,7 +13,7 @@ app.post('/store-file', (req, res) => {
     const { file, data } = req.body;
 
     if (!file || !data) {
-        return res.status(400).json({ file: null, error: "Invalid JSON input." });
+        return res.status(400).json({ file: file, error: "Invalid JSON input." });
     }
 
     const filePath = path.join(persistant_storage_path, file);
@@ -30,14 +30,14 @@ app.post('/calculate', async (req, res) => {
     const { file, product } = req.body;
 
     if (!file) {
-        return res.status(400).json({ file: null, error: "Invalid JSON input." });
+        return res.status(400).json({ file: file, error: "Invalid JSON input." });
     }
 
     const filePath = path.join(persistant_storage_path, file);
 
     if (!fs.existsSync(filePath)) {
         console.log("Containe 1:1");
-        return res.status(404).json({  file: null ,error: "File not found.",});
+        return res.status(404).json({  file: file ,error: "File not found.",});
     }
 
     try {
