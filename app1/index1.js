@@ -7,7 +7,7 @@ const app = express();
 const port = 6000;
 
 app.use(express.json());
-const persistant_storage_path = '/shifa_PV_dir'
+const persistant_storage_path = '/app/shifa_PV_dir'
 
 app.post('/store-file', (req, res) => {
     const { file, data } = req.body;
