@@ -36,6 +36,7 @@ app.post('/calculate', async (req, res) => {
     const filePath = path.join(persistant_storage_path, file);
 
     if (!fs.existsSync(filePath)) {
+        console.log("Containe 1");
         return res.status(404).json({  file: null ,error: "File not found.",});
     }
 
