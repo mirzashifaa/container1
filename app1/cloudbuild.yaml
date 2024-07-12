@@ -16,7 +16,7 @@ steps:
     - '-f'
     - '/app1/container1-deployment.yaml'
     env:
-    - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
+    - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
     - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'
 
 options:
