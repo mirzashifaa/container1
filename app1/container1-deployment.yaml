@@ -1,73 +1,74 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: shifa-pv
+  name: shifa-pv-1
 spec:
   capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  persistantVolumeReclaimPolicy: Retain
+    storage: 10Gi
   storageClassName: standard
+  accessModes:
+  - ReadWriteOnce
   gcePersistentDisk:
-    pdName: shifa-pv-disk
+    pdName: shifa-disk
     fsType: ext4
 
-  hostPath:
-    path: "/shifa_PV_dir"
 ---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: shifa-pvc
+  name: pvc-1
 spec:
+  volumeName: shifa-pv-1
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
-
+      storage: 1Gi
+  storageClassName: standard
+  selector:
+    matchLabels:
+      name: shifa-pv-1
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: container1-deployment
+  name: container-1
   labels:
-    app: container1
+    app: container-1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: container1
+      app: container-1
   template:
     metadata:
       labels:
-        app: container1
+        app: container-1
     spec:
       containers:
-      - name: container1
-        image: us-central1-docker.pkg.dev/kube-429214/my-k8-repo/container1
+      - name: container-2
         imagePullPolicy: Always
+        image: us-central1-docker.pkg.dev/kube-429214/my-k8-repo/container1
         ports:
         - containerPort: 6000
         volumeMounts:
-        - mountPath: /app/shifa_PV_dir
-          name: shifa-storage
+        - name: container1-data
+          mountPath: /app/shifa_PV_dir
       volumes:
-      - name: shifa-storage
+      - name: container1-data
         persistentVolumeClaim:
-          claimName: shifa-pvc
+          claimName: pvc-1
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: container1-service
+  name: service-1
 spec:
   selector:
-    app: container1
+    app: container-1
   ports:
-    - protocol: TCP
-      port: 6000
-      targetPort: 6000
+  - protocol: TCP
+    port: 6000
+    targetPort: 6000
   type: LoadBalancer

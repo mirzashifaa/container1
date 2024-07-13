@@ -10,6 +10,17 @@ steps:
            'us-central1-docker.pkg.dev/${PROJECT_ID}/my-k8-repo/container1']
 
   - name: 'gcr.io/cloud-builders/kubectl'
+    id: 'Selete Container1'
+    args:
+    - 'delete'
+    - 'pod'
+    - '-l'
+    - 'app = container1'
+    env:
+    - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'
+
+  - name: 'gcr.io/cloud-builders/kubectl'
     id: 'Deploy Container1'
     args:
     - 'apply'
